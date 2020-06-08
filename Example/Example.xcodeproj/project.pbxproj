@@ -15,6 +15,11 @@
 		397CFE10248AA9EB004185B1 /* DistorsionBlur.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 397CFE0D248AA9D8004185B1 /* DistorsionBlur.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		397CFE17248AAAC0004185B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 397CFE15248AAAC0004185B1 /* LaunchScreen.storyboard */; };
 		397CFE19248AAAE6004185B1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 397CFE18248AAAE6004185B1 /* RootView.swift */; };
+		39D49A86248D9E4F00183520 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A85248D9E4F00183520 /* UIImage+Extensions.swift */; };
+		39D49A89248D9EA000183520 /* DistorionBlurProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A88248D9EA000183520 /* DistorionBlurProcessor.swift */; };
+		39D49A8B248D9EB000183520 /* DistorsionBlurEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A8A248D9EB000183520 /* DistorsionBlurEffect.swift */; };
+		39D49A8D248DAAD500183520 /* CIFilter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A8C248DAAD500183520 /* CIFilter+Extension.swift */; };
+		39D49A90248DAC6700183520 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A8F248DAC6700183520 /* Comparable+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +56,11 @@
 		397CFE16248AAAC0004185B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		397CFE18248AAAE6004185B1 /* RootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		397CFE1A248AAAEE004185B1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39D49A85248D9E4F00183520 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		39D49A88248D9EA000183520 /* DistorionBlurProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorionBlurProcessor.swift; sourceTree = "<group>"; };
+		39D49A8A248D9EB000183520 /* DistorsionBlurEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorsionBlurEffect.swift; sourceTree = "<group>"; };
+		39D49A8C248DAAD500183520 /* CIFilter+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CIFilter+Extension.swift"; sourceTree = "<group>"; };
+		39D49A8F248DAC6700183520 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +98,8 @@
 			children = (
 				397CFE12248AAA5A004185B1 /* App */,
 				397CFE13248AAA67004185B1 /* Views */,
+				39D49A87248D9E8500183520 /* DistorsionBlur */,
+				39D49A83248D9E3600183520 /* Utilities */,
 				397CFE14248AAA7A004185B1 /* Resources */,
 				397CFDFC248AA9BE004185B1 /* Preview Content */,
 			);
@@ -142,6 +154,25 @@
 				397CFE15248AAAC0004185B1 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		39D49A83248D9E3600183520 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				39D49A8C248DAAD500183520 /* CIFilter+Extension.swift */,
+				39D49A8F248DAC6700183520 /* Comparable+Extensions.swift */,
+				39D49A85248D9E4F00183520 /* UIImage+Extensions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		39D49A87248D9E8500183520 /* DistorsionBlur */ = {
+			isa = PBXGroup;
+			children = (
+				39D49A88248D9EA000183520 /* DistorionBlurProcessor.swift */,
+				39D49A8A248D9EB000183520 /* DistorsionBlurEffect.swift */,
+			);
+			path = DistorsionBlur;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +266,11 @@
 				397CFDF5248AA9BB004185B1 /* AppDelegate.swift in Sources */,
 				397CFDF7248AA9BB004185B1 /* SceneDelegate.swift in Sources */,
 				397CFE19248AAAE6004185B1 /* RootView.swift in Sources */,
+				39D49A8D248DAAD500183520 /* CIFilter+Extension.swift in Sources */,
+				39D49A8B248D9EB000183520 /* DistorsionBlurEffect.swift in Sources */,
+				39D49A89248D9EA000183520 /* DistorionBlurProcessor.swift in Sources */,
+				39D49A86248D9E4F00183520 /* UIImage+Extensions.swift in Sources */,
+				39D49A90248DAC6700183520 /* Comparable+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
