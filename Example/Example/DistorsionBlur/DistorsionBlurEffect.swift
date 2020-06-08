@@ -37,96 +37,13 @@ struct DistorsionBlurEffect {
         let overlayBlend = CIFilter.sourceOverCompositing(inputImage: overlayAlpha.outputImage!, inputBackgroundImage: firstImage)!
         
         let center = CIVector(x: firstImage.extent.width / 2, y: firstImage.extent.height / 2)
-        let distorsion = CIFilter.twirlDistortion(inputImage: overlayBlend.outputImage!, inputCenter: center, inputRadius: NSNumber(value: Double(radius)))!
-        
-        let blur = radiusRatio * 12
-        let blurN = NSNumber(value: Double(blur))
-        //let blurred = CIFilter.zoomBlur(inputImage: distorsion.outputImage!, inputCenter: center, inputAmount: blurN)
-        //let blurred = CIFilter.boxBlur(inputImage: distorsion.outputImage!, inputRadius: blurN)
-        let blurred = CIFilter.gaussianBlur(inputImage: distorsion.outputImage!, inputRadius: blurN)
-        
-        if let outputImage = blurred?.outputImage,
-            let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-            
-            let a = abs(outputImage.extent.origin.x)
-            let w = outputImage.extent.width - 2 * a
-            let h = outputImage.extent.height - 2 * a
-            let croppingRect = CGRect(x: a, y: a, width: w, height: h)
-            let scaled = cgimg.cropping(to: croppingRect)!
-            
-            return UIImage(cgImage: scaled)
+        let distorsion = CIFilter.twirlDistortion(inputImage: overlayBlend.outputImage!, inputCenter: center, inputRadius: NSNumber(value: Double(radius)))
+                
+        if let outputImage = distorsion?.outputImage,
+            let result = context.createCGImage(outputImage, from: outputImage.extent) {
+            return UIImage(cgImage: result)
         }
         
         return nil
     }
-    
-    func compositeSourceOver(img: CIImage, overlay:CIImage) -> CIImage {
-
-        let parameters = [
-            kCIInputBackgroundImageKey: img,
-            kCIInputImageKey: overlay
-        ]
-        guard let filter = CIFilter(name: "CISourceOverCompositing", parameters: parameters) else {
-            fatalError()
-        }
-        guard let outputImage = filter.outputImage else { fatalError() }
-        let cropRect = img.extent
-        return outputImage.cropped(to: cropRect)
-    }
 }
-
-/*
-extension UIImage {
-    func resizeCI(size:CGSize) -> UIImage? {
-        let scale = (Double)(size.width) / (Double)(self.size.width)
-            let image = UIKit.CIImage(CGImage:self.CGImage!)
-            
-            let filter = CIFilter(name: "CILanczosScaleTransform")!
-            filter.setValue(image, forKey: kCIInputImageKey)
-            filter.setValue(NSNumber(double:scale), forKey: kCIInputScaleKey)
-            filter.setValue(1.0, forKey:kCIInputAspectRatioKey)
-            let outputImage = filter.valueForKey(kCIOutputImageKey) as! UIKit.CIImage
-            
-            let context = CIContext(options: [kCIContextUseSoftwareRenderer: false])
-            let resizedImage = UIImage(CGImage: context.createCGImage(outputImage, fromRect: outputImage.extent))
-            return resizedImage
-    }
-}
-*/
-
-/*
-private func loadImage1() {
-    guard let inputImage = UIImage(named: "1") else { return }
-    let beginImage = CIImage(image: inputImage)
-    
-    let context = CIContext()
-    let currentFilter = CIFilter.sepiaTone()
-    currentFilter.inputImage = beginImage
-    currentFilter.intensity = 1
-    
-    guard let outputImage = currentFilter.outputImage else { return }
-
-    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-        let uiImage = UIImage(cgImage: cgimg)
-        let image = Image(uiImage: uiImage)
-    }
-}
-
-private func loadImage2() {
-    guard let inputImage = UIImage(named: "2") else { return }
-    let beginImage = CIImage(image: inputImage)
-    
-    let context = CIContext()
-    let currentFilter = CIFilter.crystallize()
-    //currentFilter.inputImage = beginImage not working
-    currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
-    currentFilter.radius = 200
-    
-    guard let outputImage = currentFilter.outputImage else { return }
-
-    if let cgimg = context.createCGImage(outputImage, from: outputImage.extent) {
-        let uiImage = UIImage(cgImage: cgimg)
-        image = Image(uiImage: uiImage)
-    }
-}
-*/

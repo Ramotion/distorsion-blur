@@ -28,6 +28,7 @@ struct RootView: View {
             image?
                 .resizable()
                 .scaledToFill()
+                .blur(radius: (1 - abs(0.5 - ratio) * 2) * 10)
             Slider(value: r)
                 .padding(.bottom, 60)
                 .frame(maxWidth: 240, maxHeight: .infinity, alignment: .bottom)
