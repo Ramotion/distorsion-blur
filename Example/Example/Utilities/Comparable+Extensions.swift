@@ -1,6 +1,6 @@
 //
 //  Compare+Extensions.swift
-//  BlobMenu
+//  DistorsionBlur
 //
 //  Created by Igor K. on 23.04.2020.
 //  Copyright © 2020 Ramotion. All rights reserved.

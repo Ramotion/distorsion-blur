@@ -1,10 +1,17 @@
+//
+//  CIFilter+Extension.swift
+//  DistorsionBlur
+//
+//  Created by Igor K. on 08.06.2020.
+//  Copyright © 2020 Ramotion. All rights reserved.
+//
+
 import Foundation
 import CoreImage
-import AVFoundation
 
-infix operator |> : ApplyFilterPrecedence
+infix operator |> : ApplyPrecedence
 
-precedencegroup ApplyFilterPrecedence {
+precedencegroup ApplyPrecedence {
     associativity: left
     lowerThan: BitwiseShiftPrecedence
     higherThan: MultiplicationPrecedence
@@ -20,6 +27,18 @@ extension CIImage {
         guard let filter = rhs else { return lhs }
         filter.setValue(lhs, forKey: kCIInputImageKey)
         return filter.outputImage ?? lhs
+    }
+    
+    static func |> (lhs: CIImage, rhs: (CIImage) -> CIImage) -> CIImage {
+        return rhs(lhs)
+    }
+}
+
+extension CIFilter {
+    
+    func apply(to image: CIImage) -> CIImage {
+        setValue(image, forKey: kCIInputImageKey)
+        return outputImage ?? image
     }
 }
 
