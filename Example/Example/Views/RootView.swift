@@ -13,7 +13,7 @@ struct RootView: View {
     @State private var image: Image?
     @State private var ratio: CGFloat = 0
     
-    private var processor = DistorsionEffect(first: #imageLiteral(resourceName: "3"), second: #imageLiteral(resourceName: "1"))
+    private var processor = DistorsionEffect(first: #imageLiteral(resourceName: "3"), second: #imageLiteral(resourceName: "1"), distorsionPattern: .manual(calculate: DistorionBlurUtilities.calculateRandomTwirlPositions))
      
     
     var body: some View {

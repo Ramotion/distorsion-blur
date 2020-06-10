@@ -13,8 +13,13 @@ public enum DistorsionPattern {
     case single(centerDisposition: CGPoint)
     case grid(rows: Int, columns: Int, centerDisposition: CGPoint)
     case polygon(sides: Int, radius: CGFloat, angle: Angle, scale: CGFloat, centerDisposition: CGPoint)
-    case random
+    case manual(calculate: (_ frame: CGRect) -> [TwirlGeometry])
     case custom(transformation: (_ input: CIImage, _ ratio: CGFloat, _ frame: CGRect) -> CIImage)
+}
+
+public struct TwirlGeometry {
+    let center: CGPoint
+    let radius: CGFloat
 }
 
 struct DistorsionEffect {
@@ -24,9 +29,11 @@ struct DistorsionEffect {
     private let distorsionPattern: DistorsionPattern
     private let context = CIContext()
     
+    private var randomTwirlPositions: [(CGPoint, CGFloat)] = []
+    
     init?(first: UIImage,
           second: UIImage,
-          distorsionPattern: DistorsionPattern = .polygon(sides: 3, radius: 130, angle: Angle(radians: .pi/2), scale: 1, centerDisposition: .zero)) {
+          distorsionPattern: DistorsionPattern = .single(centerDisposition: .zero)) {
         
         guard let f = CIImage(image: first),
             let s = CIImage(image: second) else { return nil }
@@ -86,10 +93,14 @@ struct DistorsionEffect {
                 let filter = CIFilter.twirlDistortion(inputCenter: o + disposition, inputRadius: r)
                 outputImage = outputImage |> filter
             }
-        case .random:
-            let count = Int.random(in: 1...7)
-            
-            
+        case .manual(let calculate):
+            let twirls = calculate(firstImage.extent)
+            for t in twirls {
+                let o = CIVector(x: t.center.x, y: t.center.y)
+                let radius = radiusRatio * t.radius
+                let filter = CIFilter.twirlDistortion(inputCenter: o, inputRadius: radius)
+                outputImage = outputImage |> filter
+            }
         case .custom(let transformation):
             let frame = firstImage.extent
             outputImage = transformation(inputImage, ratio, frame)
