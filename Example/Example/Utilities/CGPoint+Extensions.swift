@@ -64,3 +64,9 @@ func - (lhs: CIVector, rhs: CGPoint) -> CIVector {
     return CIVector(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
 }
 
+
+extension CGPoint {
+    public init(uniform v: CGFloat) {
+        self.init(x: v, y: v)
+    }
+}

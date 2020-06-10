@@ -12,7 +12,8 @@ import SwiftUI
 public enum DistorsionPattern {
     case single(centerDisposition: CGPoint)
     case grid(rows: Int, columns: Int, centerDisposition: CGPoint)
-    case polygon(sides: Int, angle: Angle, centerDisposition: CGPoint)
+    case polygon(sides: Int, radius: CGFloat, angle: Angle, scale: CGFloat, centerDisposition: CGPoint)
+    case random
     case custom(transformation: (_ input: CIImage, _ ratio: CGFloat, _ frame: CGRect) -> CIImage)
 }
 
@@ -25,7 +26,7 @@ struct DistorsionEffect {
     
     init?(first: UIImage,
           second: UIImage,
-          distorsionPattern: DistorsionPattern = .grid(rows: 1, columns: 3, centerDisposition: .zero)) {
+          distorsionPattern: DistorsionPattern = .polygon(sides: 3, radius: 130, angle: Angle(radians: .pi/2), scale: 1, centerDisposition: .zero)) {
         
         guard let f = CIImage(image: first),
             let s = CIImage(image: second) else { return nil }
@@ -70,8 +71,25 @@ struct DistorsionEffect {
                     outputImage = outputImage |> filter
                 }
             }
-        case let .polygon(sides, angle, disposition):
-            fatalError()
+        case let .polygon(sides, radius, angle, scale, disposition):
+            let w = firstImage.extent.width - 2 * radius
+            let h = firstImage.extent.height - 2 * radius
+            let s = min(w, h) / 2.0 * scale
+            let c = CGPoint(x: w / 2.0, y: h / 2.0) + CGPoint(uniform: radius)
+            let r = radiusRatio * radius
+            
+            for i in 0 ..< sides {
+                let additionalAngle = CGFloat(angle.radians)
+                let a = CGFloat(i) * 2 * CGFloat.pi / CGFloat(sides) + additionalAngle
+                let o = CIVector(x: c.x + CGFloat(cos(a) * s), y: c.y + CGFloat(sin(a) * s))
+                
+                let filter = CIFilter.twirlDistortion(inputCenter: o + disposition, inputRadius: r)
+                outputImage = outputImage |> filter
+            }
+        case .random:
+            let count = Int.random(in: 1...7)
+            
+            
         case .custom(let transformation):
             let frame = firstImage.extent
             outputImage = transformation(inputImage, ratio, frame)
