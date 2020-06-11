@@ -10,36 +10,19 @@ import SwiftUI
 
 struct RootView: View {
     
-    @State private var image: Image?
     @State private var ratio: CGFloat = 0
     
-    private var processor = DistorsionEffect(first: #imageLiteral(resourceName: "3"), second: #imageLiteral(resourceName: "1"), distorsionPattern: .manual(calculate: DistorionBlurUtilities.calculateRandomTwirlPositions))
-     
-    
     var body: some View {
-        let r = Binding(get: {
-            return self.ratio
-        }, set: { ratio in
-            self.ratio = ratio
-            self.updateImage(ratio: ratio)
-        })
-        
-        return ZStack {
-            image?
-                .resizable()
-                .scaledToFill()
-                .blur(radius: (1 - abs(0.5 - ratio) * 2) * 10)
-            Slider(value: r)
+        ZStack {
+            DistorionBlurContainer(firsImage: #imageLiteral(resourceName: "1"), secondImage: #imageLiteral(resourceName: "4"), ratio: ratio, bluredContent: {
+                Text("Blurred")
+            }, foregroundContent: {
+                Text("Not Blurred").padding(.top, 100)
+            })
+            Slider(value: $ratio)
                 .padding(.bottom, 60)
                 .frame(maxWidth: 240, maxHeight: .infinity, alignment: .bottom)
         }
-        .edgesIgnoringSafeArea(.all)
-        .onAppear { self.updateImage(ratio: 0) }
-    }
-    
-    private func updateImage(ratio: CGFloat) {
-        guard let uiImage = processor?.generateEffect(for: ratio) else { return }
-        self.image = Image(uiImage: uiImage)
     }
 }
 
