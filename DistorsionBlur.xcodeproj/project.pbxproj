@@ -8,12 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		397CFDE2248AA950004185B1 /* DistorsionBlur.h in Headers */ = {isa = PBXBuildFile; fileRef = 397CFDE0248AA950004185B1 /* DistorsionBlur.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		39D49AA12492684600183520 /* CIFilter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9D2492682100183520 /* CIFilter+Extension.swift */; };
+		39D49AA22492684600183520 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9E2492682100183520 /* Comparable+Extensions.swift */; };
+		39D49AA32492684600183520 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9F2492682100183520 /* CGPoint+Extensions.swift */; };
+		39D49AA42492684A00183520 /* DistorionBlurContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A99249267A500183520 /* DistorionBlurContainer.swift */; };
+		39D49AA52492684A00183520 /* DistorsionEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9A249267A500183520 /* DistorsionEffect.swift */; };
+		39D49AA62492684A00183520 /* DistorionBlurUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9B249267A500183520 /* DistorionBlurUtilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		397CFDDD248AA950004185B1 /* DistorsionBlur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DistorsionBlur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CFDE0248AA950004185B1 /* DistorsionBlur.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DistorsionBlur.h; sourceTree = "<group>"; };
 		397CFDE1248AA950004185B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39D49A99249267A500183520 /* DistorionBlurContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorionBlurContainer.swift; sourceTree = "<group>"; };
+		39D49A9A249267A500183520 /* DistorsionEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorsionEffect.swift; sourceTree = "<group>"; };
+		39D49A9B249267A500183520 /* DistorionBlurUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorionBlurUtilities.swift; sourceTree = "<group>"; };
+		39D49A9D2492682100183520 /* CIFilter+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CIFilter+Extension.swift"; sourceTree = "<group>"; };
+		39D49A9E2492682100183520 /* Comparable+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comparable+Extensions.swift"; sourceTree = "<group>"; };
+		39D49A9F2492682100183520 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,7 +42,7 @@
 		397CFDD3248AA950004185B1 = {
 			isa = PBXGroup;
 			children = (
-				397CFDDF248AA950004185B1 /* DistorsionBlur */,
+				397CFDDF248AA950004185B1 /* Sources */,
 				397CFDDE248AA950004185B1 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,13 +55,35 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		397CFDDF248AA950004185B1 /* DistorsionBlur */ = {
+		397CFDDF248AA950004185B1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				397CFDE0248AA950004185B1 /* DistorsionBlur.h */,
 				397CFDE1248AA950004185B1 /* Info.plist */,
+				39D49AA02492682100183520 /* Utilities */,
+				39D49A9C249267A500183520 /* Effect */,
 			);
-			path = DistorsionBlur;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		39D49A9C249267A500183520 /* Effect */ = {
+			isa = PBXGroup;
+			children = (
+				39D49A99249267A500183520 /* DistorionBlurContainer.swift */,
+				39D49A9A249267A500183520 /* DistorsionEffect.swift */,
+				39D49A9B249267A500183520 /* DistorionBlurUtilities.swift */,
+			);
+			path = Effect;
+			sourceTree = "<group>";
+		};
+		39D49AA02492682100183520 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				39D49A9D2492682100183520 /* CIFilter+Extension.swift */,
+				39D49A9E2492682100183520 /* Comparable+Extensions.swift */,
+				39D49A9F2492682100183520 /* CGPoint+Extensions.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +165,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39D49AA12492684600183520 /* CIFilter+Extension.swift in Sources */,
+				39D49AA62492684A00183520 /* DistorionBlurUtilities.swift in Sources */,
+				39D49AA52492684A00183520 /* DistorsionEffect.swift in Sources */,
+				39D49AA32492684600183520 /* CGPoint+Extensions.swift in Sources */,
+				39D49AA42492684A00183520 /* DistorionBlurContainer.swift in Sources */,
+				39D49AA22492684600183520 /* Comparable+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +306,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = DistorsionBlur/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -291,7 +331,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = DistorsionBlur/Info.plist;
+				INFOPLIST_FILE = Sources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

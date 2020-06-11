@@ -9,15 +9,15 @@
 import Foundation
 import SwiftUI
 
-struct DistorionBlurUtilities {
+public struct DistorionBlurUtilities {
     
     private static var cache: [CGRect: [TwirlGeometry]] = [:]
     
-    static func calculateRandomTwirlPositions(in rect: CGRect) -> [TwirlGeometry] {
+    public static func calculateRandomTwirlPositions(in rect: CGRect) -> [TwirlGeometry] {
         return calculateRandomTwirlPositions(in: rect, recalculate: .constant(false))
     }
     
-    static func calculateRandomTwirlPositions(in rect: CGRect, recalculate: Binding<Bool>) -> [TwirlGeometry] {
+    public static func calculateRandomTwirlPositions(in rect: CGRect, recalculate: Binding<Bool>) -> [TwirlGeometry] {
         
         if !recalculate.wrappedValue, let result = cache[rect], !result.isEmpty {
             return result

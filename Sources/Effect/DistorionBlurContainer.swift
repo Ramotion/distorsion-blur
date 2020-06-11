@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct DistorionBlurContainer<BluredContent, ForegroundContent>: View where BluredContent: View, ForegroundContent: View {
+public struct DistorionBlurContainer<BluredContent, ForegroundContent>: View where BluredContent: View, ForegroundContent: View {
     
     @State private var image: Image?
     private let bluredContent: () -> BluredContent
@@ -17,7 +17,7 @@ struct DistorionBlurContainer<BluredContent, ForegroundContent>: View where Blur
     private let ratio: CGFloat
     private let processor: DistorsionEffect?
     
-    init(firsImage: UIImage,
+    public init(firsImage: UIImage,
          secondImage: UIImage,
          ratio: CGFloat,
          bluredContent: @escaping () -> BluredContent,
@@ -30,7 +30,7 @@ struct DistorionBlurContainer<BluredContent, ForegroundContent>: View where Blur
         self.processor = DistorsionEffect(first: firsImage, second: secondImage, distorsionPattern: distorsionPattern)
     }
     
-    var body: some View{
+    public var body: some View{
         return ZStack {
             background?
                 .resizable()
