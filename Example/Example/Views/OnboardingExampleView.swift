@@ -13,6 +13,9 @@ import DistorsionBlur
 struct OnboardingExampleView: View {
     
     var body: some View {
-        Text("TODO")
+        PageView([
+            Image(uiImage: #imageLiteral(resourceName: "1")),
+            Image(uiImage: #imageLiteral(resourceName: "4"))
+        ])
     }
 }

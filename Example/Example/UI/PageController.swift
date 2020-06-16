@@ -1,5 +1,5 @@
 //
-//  Pager.swift
+//  PageController.swift
 //  Example
 //
 //  Created by Igor K. on 15.06.2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct Pager<Content: View>: UIViewRepresentable {
+struct PageController: UIViewControllerRepresentable {
     
     enum Position {
         case next
@@ -17,7 +17,7 @@ struct Pager<Content: View>: UIViewRepresentable {
         case previous
     }
     
-    private let pageBuilder: (_ index: Int, _ position: Position) -> Content?
+    private let pageBuilder: (_ index: Int, _ position: Position) -> UIViewController?
     private let controllerWillChange: (_ previous: Int, _ current: Int) -> Void
     private let controllerDidChange: (_ previous: Int, _ current: Int) -> Void
     
@@ -25,46 +25,45 @@ struct Pager<Content: View>: UIViewRepresentable {
     private let currentIndex: Binding<Int>
     
     init(currentIndex: Binding<Int>,
-         @ViewBuilder pageBuilder: @escaping (Int, Position) -> Content?,
-         direction: UIPageViewController.NavigationOrientation = .horizontal,
+         orientation: UIPageViewController.NavigationOrientation = .horizontal,
          controllerWillChange: @escaping (_ previous: Int, _ current: Int) -> Void = { _,_ in },
-         controllerDidChange: @escaping (_ previous: Int, _ current: Int) -> Void = { _,_ in }) {
+         controllerDidChange: @escaping (_ previous: Int, _ current: Int) -> Void = { _,_ in },
+         pageBuilder: @escaping (Int, Position) -> UIViewController?) {
         
+        self.vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: orientation)
         self.currentIndex = currentIndex
         self.pageBuilder = pageBuilder
         self.controllerWillChange = controllerWillChange
         self.controllerDidChange = controllerDidChange
-        self.vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: direction, options: nil)
     }
-    
-    func makeUIView(context: UIViewRepresentableContext<Pager>) -> UIView {
-        vc.view.backgroundColor = .white
-        return vc.view
-    }
-    
-    func updateUIView(_ uiView: UIView, context: UIViewRepresentableContext<Pager>) {
-        //let scrollView = vc.view.subviews.compactMap { $0 as? UIScrollView }.first
-    }
-    
+
     func makeCoordinator() -> Coordinator {
-        let coordinator = Coordinator(container: self)
-        vc.delegate = coordinator
-        vc.dataSource = coordinator
-        return coordinator
+        Coordinator(controller: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIPageViewController {
+        vc.dataSource = context.coordinator
+        vc.delegate = context.coordinator
+        return vc
+    }
+
+    func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
+        //let scrollView = vc.view.subviews.compactMap { $0 as? UIScrollView }.first
+        context.coordinator.setIndex(currentIndex.wrappedValue)
     }
     
     final class Coordinator: NSObject, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
         
-        private let container: Pager
+        private let parent: PageController
         private var currentVC: UIViewController?
         
         private var currentIndex: Int {
-            get { return container.currentIndex.wrappedValue }
-            set { container.currentIndex.wrappedValue = newValue }
+            get { return parent.currentIndex.wrappedValue }
+            set { DispatchQueue.main.async { self.parent.currentIndex.wrappedValue = newValue } }
         }
         
-        init(container: Pager) {
-            self.container = container
+        init(controller: PageController) {
+            self.parent = controller
         }
         
         
@@ -83,7 +82,7 @@ struct Pager<Content: View>: UIViewRepresentable {
         //MARK: - Page view controller delegate methods    
         func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
             guard let vc = pendingViewControllers.first else { return }
-            container.controllerWillChange(currentIndex, vc.pageIndex)
+            parent.controllerWillChange(currentIndex, vc.pageIndex)
         }
         
         func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -91,32 +90,31 @@ struct Pager<Content: View>: UIViewRepresentable {
             
             let previousIndex = currentIndex
             currentIndex = controller.pageIndex
-            container.controllerDidChange(previousIndex, currentIndex)
+            parent.controllerDidChange(previousIndex, currentIndex)
         }
         
         //MARK: - Actions
         func reload() {
             setIndex(0)
         }
-        
+
         func setIndex(_ index: Int, animated: Bool = false) {
             let direction: UIPageViewController.NavigationDirection = index >= currentIndex ? .forward : .reverse
             self.setIndex(index, direction: direction, animated: animated)
         }
-        
+
         func setIndex(_ index: Int, direction: UIPageViewController.NavigationDirection, animated: Bool = false) {
             let previousIndex = currentIndex
-            container.controllerWillChange(previousIndex, index)
+            parent.controllerWillChange(previousIndex, index)
             currentIndex = index
             currentVC = controller(for: currentIndex, position: .current)
             let controllers = [currentVC].compactMap { $0 }
-            container.vc.setViewControllers(controllers, direction: direction, animated: animated, completion: nil)
-            container.controllerDidChange(previousIndex, currentIndex)
+            parent.vc.setViewControllers(controllers, direction: direction, animated: animated, completion: nil)
+            parent.controllerDidChange(previousIndex, currentIndex)
         }
         
         private func controller(for index: Int, position: Position) -> UIViewController? {
-            guard let content = container.pageBuilder(index, position) else { return nil }
-            let vc = UIHostingController(rootView: content)
+            guard let vc = parent.pageBuilder(index, position) else { return nil }
             vc.pageIndex = index
             return vc
         }
