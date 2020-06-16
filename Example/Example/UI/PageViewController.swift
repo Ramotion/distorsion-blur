@@ -10,7 +10,14 @@ import SwiftUI
 import UIKit
 
 struct PageViewController: UIViewControllerRepresentable {
-    var controllers: [UIViewController]
+    
+    enum Position {
+        case next
+        case current
+        case previous
+    }
+    
+    let controllers: [UIViewController]
     @Binding var currentPage: Int
 
     func makeCoordinator() -> Coordinator {
@@ -23,7 +30,7 @@ struct PageViewController: UIViewControllerRepresentable {
             navigationOrientation: .horizontal)
         pageViewController.dataSource = context.coordinator
         pageViewController.delegate = context.coordinator
-
+        pageViewController.view.backgroundColor = .clear
         return pageViewController
     }
 

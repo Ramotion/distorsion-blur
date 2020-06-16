@@ -16,6 +16,7 @@ struct PageView<Page: View>: View {
         self.viewControllers = views.map {
             let vc = UIHostingController(rootView: $0)
             vc.view.clipsToBounds = true
+            vc.view.backgroundColor = .clear
             return vc
         }
     }
