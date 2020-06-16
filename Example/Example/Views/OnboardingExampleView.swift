@@ -17,7 +17,10 @@ struct OnboardingExampleView: View {
             background(index: 0)
             PageView([
                 self.page(title: "Sweden"),
-                self.page(title: "New Zealand")
+                self.page(title: "New Zealand"),
+                self.page(title: "Bali"),
+                self.page(title: "Maldives"),
+                self.page(title: "Hawaii")
             ])
         }
     }
