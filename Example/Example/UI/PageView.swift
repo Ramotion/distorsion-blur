@@ -23,11 +23,7 @@ struct PageView<Page: View>: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            PageViewController(controllers: viewControllers, currentPage: $currentPage, controllerWillChange: {
-                print("WILL CHANGE. From: \($0), to: \($1)")
-            }, controllerDidChange: {
-                print("DID CHANGE. From: \($0), to: \($1)")
-            })
+            PageViewController(controllers: viewControllers, currentPage: $currentPage)
             PageControl(pagesCount: viewControllers.count, currentPage: $currentPage)
                 .padding(.bottom)
         }

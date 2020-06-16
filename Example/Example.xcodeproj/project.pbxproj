@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3974FEC72496D3B000E50584 /* Associated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3974FEC62496D3B000E50584 /* Associated.swift */; };
-		3974FEC92496D9EE00E50584 /* PageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3974FEC82496D9EE00E50584 /* PageController.swift */; };
 		3974FECB2497A20700E50584 /* OnboardingExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3974FECA2497A20700E50584 /* OnboardingExampleView.swift */; };
 		3974FECD2497A21800E50584 /* TransitionExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3974FECC2497A21800E50584 /* TransitionExampleView.swift */; };
 		3974FED02497BF3900E50584 /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3974FECF2497BF3900E50584 /* PageControl.swift */; };
@@ -49,8 +47,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3974FEC62496D3B000E50584 /* Associated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Associated.swift; sourceTree = "<group>"; };
-		3974FEC82496D9EE00E50584 /* PageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageController.swift; sourceTree = "<group>"; };
 		3974FECA2497A20700E50584 /* OnboardingExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingExampleView.swift; sourceTree = "<group>"; };
 		3974FECC2497A21800E50584 /* TransitionExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionExampleView.swift; sourceTree = "<group>"; };
 		3974FECF2497BF3900E50584 /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
@@ -79,15 +75,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		39200A05249902B80065E1F6 /* Temp */ = {
-			isa = PBXGroup;
-			children = (
-				3974FEC82496D9EE00E50584 /* PageController.swift */,
-				3974FEC62496D3B000E50584 /* Associated.swift */,
-			);
-			path = Temp;
-			sourceTree = "<group>";
-		};
 		3974FEC12496D31D00E50584 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,7 +116,6 @@
 				397CFE12248AAA5A004185B1 /* App */,
 				397CFE13248AAA67004185B1 /* Views */,
 				3974FEC12496D31D00E50584 /* UI */,
-				39200A05249902B80065E1F6 /* Temp */,
 				3974FEC52496D39C00E50584 /* Utilities */,
 				397CFE14248AAA7A004185B1 /* Resources */,
 				397CFDFC248AA9BE004185B1 /* Preview Content */,
@@ -280,8 +266,6 @@
 				397CFDF5248AA9BB004185B1 /* AppDelegate.swift in Sources */,
 				3974FECD2497A21800E50584 /* TransitionExampleView.swift in Sources */,
 				3974FED02497BF3900E50584 /* PageControl.swift in Sources */,
-				3974FEC72496D3B000E50584 /* Associated.swift in Sources */,
-				3974FEC92496D9EE00E50584 /* PageController.swift in Sources */,
 				3974FED42497C1FE00E50584 /* PageView.swift in Sources */,
 				3974FECB2497A20700E50584 /* OnboardingExampleView.swift in Sources */,
 				3974FED32497C1FE00E50584 /* PageViewController.swift in Sources */,
