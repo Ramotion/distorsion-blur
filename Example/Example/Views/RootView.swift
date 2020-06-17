@@ -12,7 +12,19 @@ import DistorsionBlur
 struct RootView: View {
     
     var body: some View {
-        OnboardingExampleView()
+        OnboardingView([
+            self.page(title: "Sweden"),
+            self.page(title: "New Zealand"),
+            self.page(title: "Bali"),
+            self.page(title: "Maldives"),
+            self.page(title: "Hawaii")
+        ])
+    }
+    
+    private func page(title: String) -> some View {
+        Text(title)
+        .font(Font.custom("Noteworthy-Bold", size: 32))
+        .foregroundColor(.white)
     }
 }
 
