@@ -45,39 +45,24 @@ struct PageViewController: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> PageVC {
-        let vc = PageVC(transitionStyle: .scroll, navigationOrientation: orientation)
+        let vc = PageVC(controllers: controllers, orientation: orientation)
+        vc.scrollingHandler = { i in
+            self.pageProgress = i.pageProgress
+        }
+        
         vc.dataSource = context.coordinator
         vc.delegate = context.coordinator
         vc.view.backgroundColor = .clear
         
-        let pagesCount = controllers.count
-        vc.offsetDidChanged = { [weak vc] s, old, new in
-            guard let vc = vc, pagesCount > 1 else { return }
-            guard s.isDragging || s.isDecelerating else { return }
-            
-            let n = self.orientation == .horizontal ? new.x : new.y
-            let o = self.orientation == .horizontal ? old.x : old.y
-            
-            let isForward = n > o
-            let w = vc.view.bounds.width
-            let p = (n - w) / w
-            let progress = (CGFloat(self.currentPage) + p) / CGFloat(pagesCount - 1)
-            
-            self.pageProgress = p
-            self.fullProgress = progress
-            self.pageOffsetChanged(p, progress, isForward)
-        }
         return vc
     }
 
     func updateUIViewController(_ pageViewController: PageVC, context: Context) {
-//        let vc = [controllers[currentPage]]
-//        pageViewController.setViewControllers(vc, direction: .forward, animated: true)
-//        let scrollView = pageViewController.view.subviews.compactMap { $0 as? UIScrollView }.first
-//        let x = pageProgress * pageViewController.view.frame.width
-//        pageViewController.shouldHandleScrollEvents = false
-//        scrollView?.contentOffset = CGPoint(x: x, y: 0)
-//        pageViewController.shouldHandleScrollEvents = true
+        let scrollView = pageViewController.view.subviews.compactMap ({ $0 as? UIScrollView }).first
+        guard let sv = scrollView, !sv.isDragging, !sv.isDecelerating else { return }
+        
+        let vc = [controllers[currentPage]]
+        pageViewController.setViewControllers(vc, direction: .forward, animated: true)
     }
 
     final class Coordinator: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
@@ -125,26 +110,60 @@ struct PageViewController: UIViewControllerRepresentable {
                 
                 let previousIndex = parent.currentPage
                 parent.currentPage = index
+                print("NEW. Index: \(index)")
                 parent.controllerDidChange(previousIndex, index)
             }
         }
     }
 }
 
+struct ScrollingInfo {
+    let pageProgress: CGFloat
+    let fullProgress: CGFloat
+    let isForward: Bool
+}
 
 final class PageVC: UIPageViewController {
     
-    var offsetDidChanged: (_ scrollView: UIScrollView, _ old: CGPoint, _ new: CGPoint) -> Void = { _, _, _ in }
+    var scrollingHandler: (ScrollingInfo) -> Void = { _ in }
+    
     private var observer: NSKeyValueObservation?
-    fileprivate var shouldHandleScrollEvents: Bool = true
+    private let controllers: [UIViewController]
+    
+    init(controllers: [UIViewController],
+         orientation: UIPageViewController.NavigationOrientation) {
+        
+        self.controllers = controllers
+        super.init(transitionStyle: .scroll, navigationOrientation: orientation, options: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let scrollView = view.subviews.compactMap({ $0 as? UIScrollView }).first else { return }
-        observer = scrollView.observe(\.contentOffset, options: [.old, .new]) { [unowned self] (sv, observer) in
-            guard self.shouldHandleScrollEvents else { return }
-            guard let old = observer.oldValue, let new = observer.newValue else { return }
-            self.offsetDidChanged(sv, old, new)
+        
+        observer = scrollView.observe(\.contentOffset, options: [.old, .new]) { [unowned self] (s, o) in
+            guard let old = o.oldValue, let new = o.newValue else { return }
+            
+            guard self.controllers.count > 1 else { return }
+            guard s.isDragging || s.isDecelerating else { return }
+            
+            guard let visibleVC = self.viewControllers?.first else { return }
+            guard let currentPage = self.controllers.firstIndex(of: visibleVC) else { return }
+            
+            let n = self.navigationOrientation == .horizontal ? new.x : new.y
+            let o = self.navigationOrientation == .horizontal ? old.x : old.y
+            
+            let isForward = n > o
+            let w = self.view.bounds.width
+            let p = (n - w) / w
+            let progress = (CGFloat(currentPage) + p) / CGFloat(self.controllers.count - 1)
+            
+            let info = ScrollingInfo(pageProgress: p, fullProgress: progress, isForward: isForward)
+            self.scrollingHandler(info)
         }
     }
 }
