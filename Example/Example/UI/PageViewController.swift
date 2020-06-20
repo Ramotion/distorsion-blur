@@ -17,7 +17,7 @@ struct PageViewController: UIViewControllerRepresentable {
     
     private let controllers: [UIViewController]
     private let orientation: UIPageViewController.NavigationOrientation
-    private let controllerWillChange: (_ previous: Int, _ current: Int) -> Void
+    private let controllerWillChange: (_ current: Int, _ next: Int) -> Void
     private let controllerDidChange: (_ previous: Int, _ current: Int) -> Void
     private let pageOffsetChanged: (_ pageProgress: CGFloat, _ fullProgress: CGFloat, _ isForward: Bool) -> Void
     
@@ -26,7 +26,7 @@ struct PageViewController: UIViewControllerRepresentable {
          pageProgress: Binding<CGFloat> = .constant(0),
          fullProgress: Binding<CGFloat> = .constant(0),
          orientation: UIPageViewController.NavigationOrientation = .horizontal,
-         controllerWillChange: @escaping (_ previous: Int, _ current: Int) -> Void = { _,_ in },
+         controllerWillChange: @escaping (_ current: Int, _ next: Int) -> Void = { _,_ in },
          controllerDidChange: @escaping (_ previous: Int, _ current: Int) -> Void = { _,_ in },
          pageOffsetChanged: @escaping (_ pageProgress: CGFloat, _ fullProgress: CGFloat, _ isForward: Bool) -> Void = { _,_,_ in }) {
         
