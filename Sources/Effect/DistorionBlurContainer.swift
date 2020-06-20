@@ -11,7 +11,6 @@ import SwiftUI
 
 public struct DistorionBlurContainer<BluredContent, ForegroundContent>: View where BluredContent: View, ForegroundContent: View {
     
-    @State private var image: Image?
     private let bluredContent: () -> BluredContent
     private let foregroundContent: () -> ForegroundContent
     private let ratio: CGFloat
@@ -32,14 +31,16 @@ public struct DistorionBlurContainer<BluredContent, ForegroundContent>: View whe
     
     public var body: some View{
         return ZStack {
-            background?
-                .resizable()
-                .scaledToFill()
-                .overlay(bluredContent())
-                .blur(radius: (1 - abs(0.5 - ratio) * 2) * 10)
+            ZStack {
+                background?
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            .overlay(bluredContent())
+            .blur(radius: (1 - abs(0.5 - ratio) * 2) * 10)
             foregroundContent()
         }
-        .edgesIgnoringSafeArea(.all)
     }
     
     private var background: Image? {

@@ -50,7 +50,7 @@ struct OnboardingView<Page: View>: View {
         DistorionBlurContainer(firsImage: images[currentPage],
                                secondImage: images[nextPage],
                                ratio: abs(pageProgress), bluredContent: {
-            Text("Blurred")
+            Text("Blurred").padding(.top, -100)
         }, foregroundContent: {
             Text("Not Blurred").padding(.top, 100)
         })
@@ -62,8 +62,6 @@ struct OnboardingView<Page: View>: View {
                                currentPage: $currentPage,
                                pageProgress: $pageProgress,
                                controllerWillChange: { _, next in
-                                
-                print("next: \(next)")
                 self.nextPage = next
             })
             PageControl(pagesCount: viewControllers.count, currentPage: $currentPage)
