@@ -110,7 +110,6 @@ struct PageViewController: UIViewControllerRepresentable {
                 
                 let previousIndex = parent.currentPage
                 parent.currentPage = index
-                print("NEW. Index: \(index)")
                 parent.controllerDidChange(previousIndex, index)
             }
         }

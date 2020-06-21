@@ -24,6 +24,7 @@ struct OnboardingView<Page: View>: View {
     @State var currentPage = 0
     @State var nextPage = 0 
     @State private(set) var pageProgress: CGFloat = 0
+    @State private var recalculateDistorsionPattern: Bool = false
     
     private let viewControllers: [UIHostingController<Page>]
     private let images: [UIImage]
@@ -46,14 +47,15 @@ struct OnboardingView<Page: View>: View {
     }
     
     private var background: some View {
-        
         DistorionBlurContainer(firsImage: images[currentPage],
                                secondImage: images[nextPage],
                                ratio: abs(pageProgress), bluredContent: {
             Text("Blurred").padding(.top, -100)
         }, foregroundContent: {
             Text("Not Blurred").padding(.top, 100)
-        })
+        }, distorsionPattern: .manual(calculate: { rect  in
+            DistorionBlurUtilities.calculateRandomTwirlPositions(in: rect, recalculate: self.$recalculateDistorsionPattern)
+        }))
     }
     
     private var pages: some View {
@@ -61,9 +63,8 @@ struct OnboardingView<Page: View>: View {
             PageViewController(controllers: viewControllers,
                                currentPage: $currentPage,
                                pageProgress: $pageProgress,
-                               controllerWillChange: { _, next in
-                self.nextPage = next
-            })
+                               controllerWillChange: { _, next in self.nextPage = next },
+                               controllerDidChange: { _,_ in self.recalculateDistorsionPattern = true })
             PageControl(pagesCount: viewControllers.count, currentPage: $currentPage)
                 .padding(.bottom)
         }

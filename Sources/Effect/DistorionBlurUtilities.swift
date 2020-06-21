@@ -55,7 +55,7 @@ public struct DistorionBlurUtilities {
         
         let twirls = placed.map { TwirlGeometry(center: $0, radius: $1) }
         cache[rect] = twirls
-        recalculate.wrappedValue = false
+        DispatchQueue.main.async { recalculate.wrappedValue = false }
         return twirls
     }
 }

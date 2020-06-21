@@ -13,44 +13,20 @@ import DistorsionBlur
 struct OnboardingExampleView: View {
     
     var body: some View {
-        ZStack(alignment: .top) {
-            background(index: 0)
-            PageView([
-                self.page(title: "Sweden"),
-                self.page(title: "New Zealand"),
-                self.page(title: "Bali"),
-                self.page(title: "Maldives"),
-                self.page(title: "Hawaii")
-            ])
-        }
-    }
-    
-    private func background(index: Int) -> some View {
-        ZStack {
-            Image(uiImage: #imageLiteral(resourceName: "1"))
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .edgesIgnoringSafeArea(.all)
-        }
-        
-        /*
-        Image(uiImage: #imageLiteral(resourceName: "4"))
-        Image(uiImage: #imageLiteral(resourceName: "2"))
-        Image(uiImage: #imageLiteral(resourceName: "1"))
-            .resizable()
-            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            .aspectRatio(contentMode: .fill)
-            .border(Color.blue, width: 3.0)
-            .clipped()
-         */
+        OnboardingView([
+            OnboardingPage(content: self.page(title: "Sweden"), image: #imageLiteral(resourceName: "3")),
+            OnboardingPage(content: self.page(title: "New Zealand"), image: #imageLiteral(resourceName: "1")),
+            OnboardingPage(content: self.page(title: "Bali"), image: #imageLiteral(resourceName: "4")),
+            OnboardingPage(content: self.page(title: "Maldives"), image: #imageLiteral(resourceName: "2")),
+            OnboardingPage(content: self.page(title: "Hawaii"), image: #imageLiteral(resourceName: "5"))
+        ])
     }
     
     private func page(title: String) -> some View {
         Text(title)
-        //.font(Font.custom("Zapfino", size: 32))
         .font(Font.custom("Noteworthy-Bold", size: 32))
+        //.font(Font.custom("Zapfino", size: 32))
         //.font(Font.custom("Chalkduster", size: 32))
-          
         .foregroundColor(.white)
     }
 }
