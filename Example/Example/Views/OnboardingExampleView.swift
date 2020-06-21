@@ -25,8 +25,6 @@ struct OnboardingExampleView: View {
     private func page(title: String) -> some View {
         Text(title)
         .font(Font.custom("Noteworthy-Bold", size: 32))
-        //.font(Font.custom("Zapfino", size: 32))
-        //.font(Font.custom("Chalkduster", size: 32))
         .foregroundColor(.white)
     }
 }

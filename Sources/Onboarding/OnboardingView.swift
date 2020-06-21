@@ -8,28 +8,30 @@
 
 import Foundation
 import SwiftUI
-import DistorsionBlur
 
-struct OnboardingPage<Content: View> {
-    let content: () -> Content
-    let backgroundImage: UIImage
+
+public struct OnboardingPage<Content: View> {
+    public let content: () -> Content
+    public let backgroundImage: UIImage
     
-    init(content: @autoclosure @escaping () -> Content, image: UIImage) {
+    public init(content: @autoclosure @escaping () -> Content, image: UIImage) {
         self.content = content
         self.backgroundImage = image
     }
 }
 
-struct OnboardingView<Page: View>: View {
-    @State var currentPage = 0
-    @State var nextPage = 0 
-    @State private(set) var pageProgress: CGFloat = 0
+public struct OnboardingView<Page: View>: View {
+    
+    @State public private(set) var currentPage = 0
+    @State public private(set) var pageProgress: CGFloat = 0
+    @State private var nextPage = 0
     @State private var recalculateDistorsionPattern: Bool = false
     
     private let viewControllers: [UIHostingController<Page>]
     private let images: [UIImage]
+    private let useSingleDistorsionPattern: Bool
     
-    init(_ pages: [OnboardingPage<Page>]) {
+    public init(_ pages: [OnboardingPage<Page>], singlePattern: Bool = true) {
         self.viewControllers = pages.map {
             let vc = UIHostingController(rootView: $0.content())
             vc.view.clipsToBounds = true
@@ -37,9 +39,10 @@ struct OnboardingView<Page: View>: View {
             return vc
         }
         self.images = pages.map { $0.backgroundImage }
+        self.useSingleDistorsionPattern = singlePattern
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             background
             pages
@@ -64,7 +67,10 @@ struct OnboardingView<Page: View>: View {
                                currentPage: $currentPage,
                                pageProgress: $pageProgress,
                                controllerWillChange: { _, next in self.nextPage = next },
-                               controllerDidChange: { _,_ in self.recalculateDistorsionPattern = true })
+                               controllerDidChange: { _,_ in
+                                    guard !self.useSingleDistorsionPattern else { return }
+                                    self.recalculateDistorsionPattern = true
+                               })
             PageControl(pagesCount: viewControllers.count, currentPage: $currentPage)
                 .padding(.bottom)
         }

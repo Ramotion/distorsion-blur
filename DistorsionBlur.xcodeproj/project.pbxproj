@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		397CFDE2248AA950004185B1 /* DistorsionBlur.h in Headers */ = {isa = PBXBuildFile; fileRef = 397CFDE0248AA950004185B1 /* DistorsionBlur.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3983319F24A025BF005AF1FC /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3983319A24A025B3005AF1FC /* OnboardingView.swift */; };
+		398331A024A025BF005AF1FC /* PageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3983319B24A025B3005AF1FC /* PageControl.swift */; };
+		398331A124A025BF005AF1FC /* PageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3983319C24A025B3005AF1FC /* PageView.swift */; };
+		398331A224A025BF005AF1FC /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3983319D24A025B3005AF1FC /* PageViewController.swift */; };
 		39D49AA12492684600183520 /* CIFilter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9D2492682100183520 /* CIFilter+Extension.swift */; };
 		39D49AA22492684600183520 /* Comparable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9E2492682100183520 /* Comparable+Extensions.swift */; };
 		39D49AA32492684600183520 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D49A9F2492682100183520 /* CGPoint+Extensions.swift */; };
@@ -20,6 +24,10 @@
 		397CFDDD248AA950004185B1 /* DistorsionBlur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DistorsionBlur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		397CFDE0248AA950004185B1 /* DistorsionBlur.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DistorsionBlur.h; sourceTree = "<group>"; };
 		397CFDE1248AA950004185B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3983319A24A025B3005AF1FC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3983319B24A025B3005AF1FC /* PageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageControl.swift; sourceTree = "<group>"; };
+		3983319C24A025B3005AF1FC /* PageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageView.swift; sourceTree = "<group>"; };
+		3983319D24A025B3005AF1FC /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		39D49A99249267A500183520 /* DistorionBlurContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorionBlurContainer.swift; sourceTree = "<group>"; };
 		39D49A9A249267A500183520 /* DistorsionEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorsionEffect.swift; sourceTree = "<group>"; };
 		39D49A9B249267A500183520 /* DistorionBlurUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistorionBlurUtilities.swift; sourceTree = "<group>"; };
@@ -60,10 +68,22 @@
 			children = (
 				397CFDE0248AA950004185B1 /* DistorsionBlur.h */,
 				397CFDE1248AA950004185B1 /* Info.plist */,
+				3983319E24A025B3005AF1FC /* Onboarding */,
 				39D49AA02492682100183520 /* Utilities */,
 				39D49A9C249267A500183520 /* Effect */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		3983319E24A025B3005AF1FC /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				3983319A24A025B3005AF1FC /* OnboardingView.swift */,
+				3983319B24A025B3005AF1FC /* PageControl.swift */,
+				3983319C24A025B3005AF1FC /* PageView.swift */,
+				3983319D24A025B3005AF1FC /* PageViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		39D49A9C249267A500183520 /* Effect */ = {
@@ -166,11 +186,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				39D49AA12492684600183520 /* CIFilter+Extension.swift in Sources */,
+				398331A224A025BF005AF1FC /* PageViewController.swift in Sources */,
 				39D49AA62492684A00183520 /* DistorionBlurUtilities.swift in Sources */,
+				398331A024A025BF005AF1FC /* PageControl.swift in Sources */,
 				39D49AA52492684A00183520 /* DistorsionEffect.swift in Sources */,
 				39D49AA32492684600183520 /* CGPoint+Extensions.swift in Sources */,
 				39D49AA42492684A00183520 /* DistorionBlurContainer.swift in Sources */,
 				39D49AA22492684600183520 /* Comparable+Extensions.swift in Sources */,
+				398331A124A025BF005AF1FC /* PageView.swift in Sources */,
+				3983319F24A025BF005AF1FC /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
