@@ -27,11 +27,15 @@ public struct OnboardingView<Page: View>: View {
     @State private var nextPage = 0
     @State private var recalculateDistorsionPattern: Bool = false
     
+    private var ratio: CGFloat { return abs(pageProgress) }
+    
     private let viewControllers: [UIHostingController<Page>]
     private let images: [UIImage]
     private let useSingleDistorsionPattern: Bool
     
-    public init(_ pages: [OnboardingPage<Page>], singlePattern: Bool = true) {
+    public init(pages: [OnboardingPage<Page>],
+                singlePattern: Bool = false) {
+        
         self.viewControllers = pages.map {
             let vc = UIHostingController(rootView: $0.content())
             vc.view.clipsToBounds = true
@@ -44,33 +48,42 @@ public struct OnboardingView<Page: View>: View {
 
     public var body: some View {
         ZStack {
-            background
-            pages
+            ZStack {
+                background?
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                    .blur(radius: (1 - abs(0.5 - ratio) * 2) * 10)
+            }
+            .overlay(pages)
+            indicator
         }
     }
     
-    private var background: some View {
-        DistorionBlurContainer(firsImage: images[currentPage],
-                               secondImage: images[nextPage],
-                               ratio: abs(pageProgress), bluredContent: {
-            Text("Blurred").padding(.top, -100)
-        }, foregroundContent: {
-            Text("Not Blurred").padding(.top, 100)
-        }, distorsionPattern: .manual(calculate: { rect  in
-            DistorionBlurUtilities.calculateRandomTwirlPositions(in: rect, recalculate: self.$recalculateDistorsionPattern)
+    private var background: Image? {
+        let processor = DistorsionEffect(first: images[currentPage],
+                                         second: images[nextPage],
+                                         distorsionPattern: .manual(calculate: { r in
+            return DistorionBlurUtilities.calculateRandomTwirlPositions(in: r, recalculate: self.$recalculateDistorsionPattern)
         }))
+        guard let uiImage = processor?.generateEffect(for: ratio) else { return nil }
+        return Image(uiImage: uiImage)
     }
     
     private var pages: some View {
-        ZStack(alignment: .bottom) {
-            PageViewController(controllers: viewControllers,
-                               currentPage: $currentPage,
-                               pageProgress: $pageProgress,
-                               controllerWillChange: { _, next in self.nextPage = next },
-                               controllerDidChange: { _,_ in
-                                    guard !self.useSingleDistorsionPattern else { return }
-                                    self.recalculateDistorsionPattern = true
-                               })
+        PageViewController(controllers: viewControllers,
+                           currentPage: $currentPage,
+                           pageProgress: $pageProgress,
+                           controllerWillChange: { _, next in self.nextPage = next },
+                           controllerDidChange: { _,_ in
+                            guard !self.useSingleDistorsionPattern else { return }
+                            self.recalculateDistorsionPattern = true
+        })
+    }
+    
+    private var indicator: some View {
+        VStack() {
+            Spacer()
             PageControl(pagesCount: viewControllers.count, currentPage: $currentPage)
                 .padding(.bottom)
         }

@@ -13,7 +13,7 @@ import DistorsionBlur
 struct OnboardingExampleView: View {
     
     var body: some View {
-        OnboardingView([
+        OnboardingView(pages: [
             OnboardingPage(content: self.page(title: "Sweden"), image: #imageLiteral(resourceName: "3")),
             OnboardingPage(content: self.page(title: "New Zealand"), image: #imageLiteral(resourceName: "1")),
             OnboardingPage(content: self.page(title: "Bali"), image: #imageLiteral(resourceName: "4")),
