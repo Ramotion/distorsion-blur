@@ -51,7 +51,7 @@ extension CIFilter {
     /// - parameter inputAngle: The angle (in radians) of the twirl. Values can be positive or negative. defaultValue = CGFloat.pi
     ///
     /// - returns: Generated CIFilter (you can get result with ["outputImage"])
-    static func twirlDistortion(inputCenter: CIVector = CIVector(x: 150.0, y: 150.0), inputRadius: CGFloat = 300, inputAngle: CGFloat = CGFloat.pi) -> CIFilter? {
+    static func twirlDistortion(inputCenter: CIVector = CIVector(x: 150.0, y: 150.0), inputRadius: CGFloat = 300, inputAngle: CGFloat = CGFloat.pi / 2.5) -> CIFilter? {
         
         guard let filter = CIFilter(name: "CITwirlDistortion") else { return nil }
         filter.setDefaults()

@@ -27,7 +27,7 @@ public struct DistorionBlurUtilities {
         let w = rect.width
         let h = rect.height
         let maxR = min(w, h) / 2
-        let minR = maxR * 0.25
+        let minR = maxR * 0.35
         let maxAttemptsCount: Int = 10
         
         var placed: [(CGPoint, CGFloat)] = [] //center & radius

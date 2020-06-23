@@ -16,11 +16,19 @@ struct TransitionExampleView: View {
     
     var body: some View {
         ZStack {
-            DistorionBlurContainer(firsImage: #imageLiteral(resourceName: "1"), secondImage: #imageLiteral(resourceName: "4"), ratio: ratio, bluredContent: {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            DistorionBlurContainer(firsImage: #imageLiteral(resourceName: "3"), secondImage: #imageLiteral(resourceName: "5"), ratio: ratio, bluredContent: {
                 Text("Blurred")
+                .foregroundColor(Color.white)
+                .font(Font.custom("Noteworthy-Bold", size: 32))
             }, foregroundContent: {
-                Text("Not Blurred").padding(.top, 100)
+                Text("Not Blurred")
+                .foregroundColor(Color.white)
+                .font(Font.custom("Chalkduster", size: 32))
+                .padding(.top, 100)
             })
+            
             Slider(value: $ratio)
                 .padding(.bottom, 60)
                 .frame(maxWidth: 240, maxHeight: .infinity, alignment: .bottom)

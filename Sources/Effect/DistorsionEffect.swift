@@ -10,9 +10,9 @@ import Foundation
 import SwiftUI
 
 public enum DistorsionPattern {
-    case single(centerDisposition: CGPoint)
-    case grid(rows: Int, columns: Int, centerDisposition: CGPoint)
-    case polygon(sides: Int, radius: CGFloat, angle: Angle, scale: CGFloat, centerDisposition: CGPoint)
+    case single(twirlAngle: Angle, centerDisposition: CGPoint)
+    case grid(rows: Int, columns: Int, twirlAngle: Angle, centerDisposition: CGPoint)
+    case polygon(sides: Int, radius: CGFloat, angle: Angle, scale: CGFloat, twirlAngle: Angle, centerDisposition: CGPoint)
     case manual(calculate: (_ frame: CGRect) -> [TwirlGeometry])
     case custom(transformation: (_ input: CIImage, _ ratio: CGFloat, _ frame: CGRect) -> CIImage)
 }
@@ -20,6 +20,16 @@ public enum DistorsionPattern {
 public struct TwirlGeometry {
     let center: CGPoint
     let radius: CGFloat
+    let angle: Angle
+    
+    init(center: CGPoint,
+         radius: CGFloat,
+         angle: Angle = Angle(degrees: Double.pi / 2.5)) {
+        
+        self.center = center
+        self.radius = radius
+        self.angle = angle
+    }
 }
 
 struct DistorsionEffect {
@@ -33,7 +43,7 @@ struct DistorsionEffect {
     
     init?(first: UIImage,
           second: UIImage,
-          distorsionPattern: DistorsionPattern = .single(centerDisposition: .zero)) {
+          distorsionPattern: DistorsionPattern = .single(twirlAngle: Angle(radians: Double.pi / 2.5), centerDisposition: .zero)) {
         
         guard let f = CIImage(image: first),
             let s = CIImage(image: second) else { return nil }
@@ -55,12 +65,12 @@ struct DistorsionEffect {
         
         var outputImage: CIImage = inputImage
         switch distorsionPattern {
-        case .single(let disposition):
+        case let .single(twirlAngle, disposition):
             let center = CIVector(x: firstImage.extent.width / 2, y: firstImage.extent.height / 2)
             let radius = radiusRatio * firstImage.extent.width / 2 /* max distorsion radius */
-            let filter = CIFilter.twirlDistortion(inputCenter: center + disposition, inputRadius: radius)
+            let filter = CIFilter.twirlDistortion(inputCenter: center + disposition, inputRadius: radius, inputAngle: twirlAngle.fradians)
             outputImage = inputImage |> filter
-        case let .grid(rows, columns, disposition):
+        case let .grid(rows, columns, twirlAngle, disposition):
             let wr = firstImage.extent.width / (2 * CGFloat(columns))
             let hr = firstImage.extent.height / (2 * CGFloat(rows))
             let r = min(wr, hr)
@@ -74,11 +84,11 @@ struct DistorsionEffect {
                     let cx = r * CGFloat(1 + 2 * x)
                     let cy = r * CGFloat(1 + 2 * y)
                     let c = CIVector(x: cx + dx, y: cy + dy)
-                    let filter = CIFilter.twirlDistortion(inputCenter: c + disposition, inputRadius: radius)
+                    let filter = CIFilter.twirlDistortion(inputCenter: c + disposition, inputRadius: radius, inputAngle: twirlAngle.fradians)
                     outputImage = outputImage |> filter
                 }
             }
-        case let .polygon(sides, radius, angle, scale, disposition):
+        case let .polygon(sides, radius, angle, scale, twirlAngle, disposition):
             let w = firstImage.extent.width - 2 * radius
             let h = firstImage.extent.height - 2 * radius
             let s = min(w, h) / 2.0 * scale
@@ -90,7 +100,7 @@ struct DistorsionEffect {
                 let a = CGFloat(i) * 2 * CGFloat.pi / CGFloat(sides) + additionalAngle
                 let o = CIVector(x: c.x + CGFloat(cos(a) * s), y: c.y + CGFloat(sin(a) * s))
                 
-                let filter = CIFilter.twirlDistortion(inputCenter: o + disposition, inputRadius: r)
+                let filter = CIFilter.twirlDistortion(inputCenter: o + disposition, inputRadius: r, inputAngle: twirlAngle.fradians)
                 outputImage = outputImage |> filter
             }
         case .manual(let calculate):
@@ -98,7 +108,7 @@ struct DistorsionEffect {
             for t in twirls {
                 let o = CIVector(x: t.center.x, y: t.center.y)
                 let radius = radiusRatio * t.radius
-                let filter = CIFilter.twirlDistortion(inputCenter: o, inputRadius: radius)
+                let filter = CIFilter.twirlDistortion(inputCenter: o, inputRadius: radius, inputAngle: t.angle.fradians)
                 outputImage = outputImage |> filter
             }
         case .custom(let transformation):
@@ -112,5 +122,12 @@ struct DistorsionEffect {
         }
         
         return nil
+    }
+}
+
+
+fileprivate extension Angle {
+    var fradians: CGFloat {
+        return CGFloat(self.radians)
     }
 }
