@@ -16,6 +16,7 @@ struct PageViewController: UIViewControllerRepresentable {
     @Binding var fullProgress: CGFloat
     
     private let controllers: [UIViewController]
+    private let loop: Bool
     private let orientation: UIPageViewController.NavigationOrientation
     private let controllerWillChange: (_ current: Int, _ next: Int) -> Void
     private let controllerDidChange: (_ previous: Int, _ current: Int) -> Void
@@ -23,6 +24,7 @@ struct PageViewController: UIViewControllerRepresentable {
     
     init(controllers: [UIViewController],
          currentPage: Binding<Int>,
+         loop: Bool = true,
          pageProgress: Binding<CGFloat> = .constant(0),
          fullProgress: Binding<CGFloat> = .constant(0),
          orientation: UIPageViewController.NavigationOrientation = .horizontal,
@@ -31,6 +33,7 @@ struct PageViewController: UIViewControllerRepresentable {
          pageOffsetChanged: @escaping (_ pageProgress: CGFloat, _ fullProgress: CGFloat, _ isForward: Bool) -> Void = { _,_,_ in }) {
         
         self.controllers = controllers
+        self.loop = loop
         self._currentPage = currentPage
         self._pageProgress = pageProgress
         self._fullProgress = fullProgress
@@ -78,7 +81,7 @@ struct PageViewController: UIViewControllerRepresentable {
             
             guard let index = parent.controllers.firstIndex(of: viewController) else { return nil }
             if index == 0 {
-                return parent.controllers.last
+                return parent.loop ? parent.controllers.last : nil
             }
             return parent.controllers[index - 1]
         }
@@ -89,7 +92,7 @@ struct PageViewController: UIViewControllerRepresentable {
             
             guard let index = parent.controllers.firstIndex(of: viewController) else { return nil }
             if index + 1 == parent.controllers.count {
-                return parent.controllers.first
+                return parent.loop ? parent.controllers.first : nil
             }
             return parent.controllers[index + 1]
         }

@@ -12,7 +12,7 @@ import SwiftUI
 public enum DistorsionPattern {
     case single(twirlAngle: Angle, centerDisposition: CGPoint)
     case grid(rows: Int, columns: Int, twirlAngle: Angle, centerDisposition: CGPoint)
-    case polygon(sides: Int, radius: CGFloat, angle: Angle, scale: CGFloat, twirlAngle: Angle, centerDisposition: CGPoint)
+    case polygon(sides: Int, radius: CGFloat, rotation: Angle, scale: CGFloat, twirlAngle: Angle, centerDisposition: CGPoint)
     case manual(calculate: (_ frame: CGRect) -> [TwirlGeometry])
     case custom(transformation: (_ input: CIImage, _ ratio: CGFloat, _ frame: CGRect) -> CIImage)
 }
@@ -24,7 +24,7 @@ public struct TwirlGeometry {
     
     init(center: CGPoint,
          radius: CGFloat,
-         angle: Angle = Angle(degrees: Double.pi / 2.5)) {
+         angle: Angle = Angle(radians: Double.pi / 2.5)) {
         
         self.center = center
         self.radius = radius
@@ -88,7 +88,7 @@ struct DistorsionEffect {
                     outputImage = outputImage |> filter
                 }
             }
-        case let .polygon(sides, radius, angle, scale, twirlAngle, disposition):
+        case let .polygon(sides, radius, rotation, scale, twirlAngle, disposition):
             let w = firstImage.extent.width - 2 * radius
             let h = firstImage.extent.height - 2 * radius
             let s = min(w, h) / 2.0 * scale
@@ -96,7 +96,7 @@ struct DistorsionEffect {
             let r = radiusRatio * radius
             
             for i in 0 ..< sides {
-                let additionalAngle = CGFloat(angle.radians)
+                let additionalAngle = CGFloat(rotation.radians)
                 let a = CGFloat(i) * 2 * CGFloat.pi / CGFloat(sides) + additionalAngle
                 let o = CIVector(x: c.x + CGFloat(cos(a) * s), y: c.y + CGFloat(sin(a) * s))
                 
