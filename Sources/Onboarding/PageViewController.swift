@@ -24,7 +24,7 @@ struct PageViewController: UIViewControllerRepresentable {
     
     init(controllers: [UIViewController],
          currentPage: Binding<Int>,
-         loop: Bool = true,
+         loop: Bool = false,
          pageProgress: Binding<CGFloat> = .constant(0),
          fullProgress: Binding<CGFloat> = .constant(0),
          orientation: UIPageViewController.NavigationOrientation = .horizontal,

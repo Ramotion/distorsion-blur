@@ -32,8 +32,10 @@ public struct OnboardingView<Page: View>: View {
     private let viewControllers: [UIHostingController<Page>]
     private let images: [UIImage]
     private let useSingleDistorsionPattern: Bool
+    private let loop: Bool
     
     public init(pages: [OnboardingPage<Page>],
+                loop: Bool = false,
                 singlePattern: Bool = false) {
         
         self.viewControllers = pages.map {
@@ -43,6 +45,7 @@ public struct OnboardingView<Page: View>: View {
             return vc
         }
         self.images = pages.map { $0.backgroundImage }
+        self.loop = loop
         self.useSingleDistorsionPattern = singlePattern
     }
 
@@ -73,6 +76,7 @@ public struct OnboardingView<Page: View>: View {
     private var pages: some View {
         PageViewController(controllers: viewControllers,
                            currentPage: $currentPage,
+                           loop: loop,
                            pageProgress: $pageProgress,
                            controllerWillChange: { _, next in self.nextPage = next },
                            controllerDidChange: { _,_ in
